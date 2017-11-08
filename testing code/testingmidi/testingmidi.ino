@@ -8,7 +8,7 @@
   F#-0 (0x1E) to F#-5 (0x5A) in sequence.
 
   The circuit:
-  - digital in 1 connected to MIDI jack pin 5
+  - digital pin 3 connected to MIDI jack pin 
   - MIDI jack pin 2 connected to ground
   - MIDI jack pin 4 connected to +5V through 220 ohm resistor
   - Attach a MIDI cable to the jack, then to a MIDI synth, and play music.
