@@ -52,10 +52,10 @@ void draw() {
 
     int ival = getNum(sval);    
     println("ival="+ival);
-
+   
     float frequency=0;
     float detune = 0;
-    if (ival>0 && ival<70) frequency = 261.62;    // C
+    if (ival>10 && ival<70) frequency = 261.62;    // C
     if (ival>70 && ival<150) frequency = 277.18;  // C#
     if (ival>150 && ival<230) frequency = 293.66;  // D
     if (ival>230 && ival<315) frequency = 311.12;  // D#
