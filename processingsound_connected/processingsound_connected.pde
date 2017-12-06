@@ -16,6 +16,10 @@ SinOsc[] sineWaves; // Array of sines
 float[] sineFreq; // Array of frequencies
 int numSines = 5; // Number of oscillators to use
 
+
+int prev;
+int counter;
+
 void setup() {  
   String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
   portName = "/dev/ttyUSB0";
@@ -38,6 +42,9 @@ void setup() {
     // Set the amplitudes for all oscillators
     sineWaves[i].amp(sineVolume);
   }
+  
+  counter = 0;
+  prev = 0;
 }
 
 void draw() {
@@ -53,21 +60,97 @@ void draw() {
     int ival = getNum(sval);    
     println("ival="+ival);
    
+   if (ival<1) {
+     if (counter<5) {
+       ival = prev;
+       counter++;
+     }
+     else
+       ival = 0;
+   }
+   else{
+     counter = 0;
+     prev = ival;
+   }
     float frequency=0;
     float detune = 0;
     // fix sound
-    if (ival>10 && ival<70) frequency = 261.62;    // C
-    if (ival>70 && ival<150) frequency = 277.18;  // C#
-    if (ival>150 && ival<230) frequency = 293.66;  // D
-    if (ival>230 && ival<315) frequency = 311.12;  // D#
-    if (ival>315 && ival<410) frequency = 329.62;  // E
-    if (ival>410 && ival<510) frequency = 349.22;  // F
-    if (ival>510 && ival<610) frequency = 369.99;  // F#
-    if (ival>610 && ival<680) frequency = 391.99;  // G
-    if (ival>680 && ival<760) frequency = 415.305;  // G#
-    if (ival>760 && ival<840) frequency = 440.000;  // A
-    if (ival>840 && ival<930) frequency = 466.164;  // A#
-    if (ival>930 && ival<980) frequency = 493.88;  // B
+    if (ival>10 && ival<40) frequency = 261.62;    // C
+    
+    float v1=40.0, v2=110.0;
+    float f1=261.62, f2 = 277.18;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // C->C#
+  
+    
+    v1=110; v2=210;
+    f1=277.18; f2 = 293.66;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // C# -> D
+    
+    v1=210; v2=272.5;
+    f1=293.66; f2 = 311.12;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // D-D#
+        
+    v1=272.5; v2=360;
+    f1=311.12; f2 = 329.62;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // D#-E
+   
+    v1=360; v2=460;
+    f1=329.62; f2 = 349.22;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // E->F
+
+    v1=460; v2=570;
+    f1=349.22; f2 = 369.99;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // F->F#
+     
+    v1=570; v2=640;
+    f1=369.99; f2 = 391.99;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // F#-G
+
+    v1=640; v2=730;
+    f1=391.99; f2 = 415.305;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // G->G#
+        
+    v1=730; v2=820;
+    f1=415.305; f2 = 440.000;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // G#-A
+        
+    v1=820; v2=905;
+    f1=440.000; f2 = 466.164;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // A-A#
+   
+    v1=905; v2=1023;
+    f1=466.64; f2 = 493.88;
+    if (ival>v1 && ival<v2) 
+        frequency = f1+(ival-v1)/(v2-v1)*(f2-f1);  // D#-E
+
+    
+    
+   // if (ival>190 && ival<230) frequency = 293.66;  // D
+ //   if (ival>230 && ival<315) frequency = 311.12;  // D#
+   // if (ival>315 && ival<410) frequency = 329.62;  // E
+  //  if (ival>410 && ival<510) frequency = 349.22;  // F
+  //  if (ival>510 && ival<610) frequency = 369.99;  // F#
+//    if (ival>610 && ival<680) frequency = 391.99;  // G
+//    if (ival>680 && ival<760) frequency = 415.305;  // G#
+//    if (ival>760 && ival<840) frequency = 440.000;  // A
+//    if (ival>840 && ival<930) frequency = 466.164;  // A#
+ //   if (ival>930 && ival<1024) frequency = 493.88;  // B
+    
+    
+   
+
+    
+
 
     for (int i = 0; i < numSines; i++) { 
         sineFreq[i] = frequency * (i + 1 * detune);
